@@ -1,8 +1,14 @@
-## Put comments here that give an overall description of what your
-## functions do
+## 
+## Provides functions to take a matrix as input, cache the matrix, and
+## calculate and cache the inversion of the matrix using solve().
+## 
+## It is presumed that the input matrix is invertable.  If not, R will
+## throw and error.
+## 
 
-## Write a short comment describing this function
-
+##
+## Given an invertable matrix, return a list making the matrix cacheable.
+## 
 makeCacheMatrix <- function(inputMatrix = matrix()) {
     invertedMatrix <- NULL
     setMatrix <- function(y) {
@@ -10,16 +16,23 @@ makeCacheMatrix <- function(inputMatrix = matrix()) {
         invertedMatrix <<- NULL
     }
     getMatrix <- function() inputMatrix
-    setInvertedMatrix <- function(mean) invertedMatrix <<- mean
+    setInvertedMatrix <- function(invertedMatrix) invertedMatrix <<- invertedMatrix
     getInvertedMatrix <- function() invertedMatrix
     list(setMatrix = setMatrix, getMatrix = getMatrix,
          setInvertedMatrix = setInvertedMatrix,
          getInvertedMatrix = getInvertedMatrix)
 }
 
-
-## Write a short comment describing this function
-
+##
+## Get the inversion of a matrix from cache, or calculate and cache if needed.
+## 
+## Given an input value returned from makeCacheMatrix, get the inverted matrix
+## from cache. If cache is empty, calculate the inversion and cache it in the 
+## input object for later use.
+## 
+## To adhere with the SOLID principles caching should be done in the 
+## makeCacheMatrix function instead, but meh...
+##
 cacheSolve <- function(makeCacheMatrix, ...) {
         ## Return a matrix that is the inverse of 'x'
     invertedMatrix <- makeCacheMatrix$getInvertedMatrix()
@@ -27,8 +40,8 @@ cacheSolve <- function(makeCacheMatrix, ...) {
         message("getting cached data")
         return(invertedMatrix)
     }
-    data <- makeCacheMatrix$getInvertedMatrix()
-    invertedMatrix <- solve(data, ...)
+    matrix <- makeCacheMatrix$getMatrix()
+    invertedMatrix <- solve(matrix, ...)
     makeCacheMatrix$setInvertedMatrix(invertedMatrix)
     invertedMatrix
 }
