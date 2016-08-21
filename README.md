@@ -103,3 +103,45 @@ In order to complete this assignment, you must do the following:
 ### Grading
 
 This assignment will be graded via peer assessment.
+
+### Steps for verifying functionality
+To verify the cachematrix.R file works as expected, perform the steps below.
+
+1. source the cachematrix.R file
+> source('cachematrix.R')
+1. Create a matrix and verify it is invertable
+> myMatrix <- matrix(1:4, nrow=2, ncol=2)
+> solve(myMatrix)
+<pre>
+     [,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
+</pre>
+1. Pass the matrix created above into the makeCacheMatrix function.
+> cachedMatrix <- makeCacheMatrix(myMatrix)
+1. Call the $getMatrix() method to verify it outputs the input matrix.
+> cachedMatrix$getMatrix()
+<pre>
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+</pre>
+1. Call the $getInvertedMatrix() method and verify it outputs NULL.
+> cachedMatrix$getInvertedMatrix()
+<pre>
+NULL
+</pre>
+1. Call cacheSolve twice, passing the output of the call to makeCachedMatrix. Verify both calls return the inverted matrix and that the first call DOES NOT print the line "getting cached data" and that the second call DOES print the line "getting cached data"
+> cacheSolve(cachedMatrix)
+<pre>
+     [,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
+</pre>
+> cacheSolve(cachedMatrix)
+<pre>
+getting cached data
+     [,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
+</pre>
